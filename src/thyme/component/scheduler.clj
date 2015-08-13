@@ -12,7 +12,7 @@
     (assoc this :instance
            (-> (scheduler/initialize)
                (scheduler/start)
-               (doto (jobs/schedule-all)))))
+               (doto (jobs/schedule-all job-dir)))))
   (stop [this]
     (-> (:instance this)
         (scheduler/shutdown))
