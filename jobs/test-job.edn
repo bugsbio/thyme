@@ -1,0 +1,4 @@
+{:name "Thyme Test Job"
+ :id "jobs.test"
+ :trigger {:id "triggers.test" :schedule "0 * * * * ?"}
+ :payload {:foo "bar" :baz 123}}
