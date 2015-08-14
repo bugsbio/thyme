@@ -9,6 +9,7 @@
                  [com.taoensso/timbre "3.4.0"]
                  [clj-airbrake "2.4.3"]
                  [environ "1.0.0"]
+                 [miscellany "0.0.3"]
                  [com.stuartsierra/component "0.2.3"]]
   :main ^:skip-aot thyme.core
   :resource-paths ["jobs"]
