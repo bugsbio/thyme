@@ -1,68 +1,52 @@
 (ns thyme.jobs
   (:require
-    [clj-airbrake.core                    :as airbrake]
+    [thyme.util                           :as u]
     [amazonica.aws.sns                    :as sns]
-    [clojure.edn                          :as edn]
     [clojure.java.io                      :as io]
     [environ.core                         :refer [env]]
     [taoensso.timbre                      :as log]
-    [clojurewerkz.quartzite.conversion    :as conversion]
     [clojurewerkz.quartzite.schedule.cron :as cron]
     [clojurewerkz.quartzite.scheduler     :as scheduler]
     [clojurewerkz.quartzite.triggers      :as trigger]
     [clojurewerkz.quartzite.jobs          :as job :refer [defjob]]))
 
-(defn- extract-manifest
-  [ctx]
-  (-> (conversion/from-job-data ctx)
-      (get "manifest")
-      (edn/read-string)))
-
-(defjob SNSNotificationJob
-  [ctx]
-  (try
-    (let [{:keys [name topic endpoint payload] :or {endpoint "eu-west-1"}} ;; selfishly making the region we use the default
-          (extract-manifest ctx)
-          {:keys [topic-arn]}
-          (sns/create-topic {:endpoint endpoint} :name topic)]
-      (log/info "Running" name)
-      (sns/publish {:endpoint endpoint}
-                   :topic-arn topic-arn
-                   :subject name
-                   :message (pr-str payload)))
-    (catch Throwable t
-      (log/error t "Error running job")
-      (when-let [airbrake-api-key (env :airbrake-api-key)]
-        (airbrake/notify airbrake-api-key
-                         (env :app-env)
-                         (env :user-dir)
-                         (ex-info (.getMessage t) (extract-manifest ctx) t)))
-      (throw t))))
+(def job-classes
+  "Map of keywords to job classes used when reading job manifests."
+  {:sns thyme.jobs.sns.SNSNotificationJob})
 
 (defn new-trigger
+  "Create a new Cron trigger with the specified schedule."
+  ^org.quartz.Trigger
   [{:keys [id schedule]}]
+  {:pre [(string? id)
+         (string? schedule)]}
   (trigger/build
     (trigger/with-identity (trigger/key id))
     (trigger/start-now)
     (trigger/with-schedule (cron/schedule (cron/cron-schedule schedule)))))
 
 (defn new-job
-  [{:keys [id] :as manifest}]
+  "Create a Quartz job as specified by the provided job manifest."
+  ^org.quartz.Job
+  [{:keys [id type] :as manifest}]
+  {:pre [(string? id)
+         (contains? job-classes type)]}
   (job/build
-    (job/of-type SNSNotificationJob)
+    (job/of-type (get job-classes type))
     (job/using-job-data {"manifest" (pr-str manifest)})
     (job/with-identity (job/key id))))
 
-(defn- edn?
-  [f]
-  (.endsWith (.getName f) ".edn"))
-
 (defn schedule-all
-  [scheduler job-dir]
+  "Given an org.quartz.Scheduler and a directory containing job manifests,
+  creates and schedules jobs as specified by the EDN files in the job directory."
+  ^org.quartz.Scheduler
+  [^org.quartz.Scheduler scheduler job-dir]
+  {:pre [(string? job-dir)]}
   (doseq [f (file-seq (io/file job-dir))
-          :when (edn? f)
+          :when (u/edn? f)
           :let [{:keys [name trigger] :as manifest} (edn/read-string (slurp f))]]
     (log/info "Scheduling" name "with schedule" (:schedule trigger))
     (scheduler/schedule scheduler
                         (new-job manifest)
-                        (new-trigger trigger))))
+                        (new-trigger trigger)))
+  scheduler)
