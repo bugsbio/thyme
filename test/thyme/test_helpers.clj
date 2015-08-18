@@ -1,7 +1,10 @@
-(ns thyme.test-helpers)
+(ns thyme.test-helpers
+  (:require
+    [com.stuartsierra.component :as component]))
 
 (defmacro with-system
   [[binding system] & forms]
-  `(let [~binding (com.stuartsierra.component/start ~system)]
-     ~@forms
-     (com.stuartsierra.component/stop ~binding)))
+  `(let [~binding (component/start ~system)]
+     (let [retval# ~@forms]
+       (component/stop ~binding)
+       retval#)))

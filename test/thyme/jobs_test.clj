@@ -49,5 +49,3 @@
                         j/new-trigger      identity]
             (j/schedule-all scheduler "test-jobs")
             (deref jobs))))
-
-(run-tests [*ns*])

@@ -18,5 +18,3 @@
         (-> (j/new-job manifest)
             (.getJobDataMap)
             (u/extract-manifest))))
-
-(run-tests [*ns*])

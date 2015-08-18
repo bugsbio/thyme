@@ -1,7 +1,10 @@
 (ns thyme.jobs
   (:require
+    [thyme.jobs.sns]
+
     [thyme.util                           :as u]
     [amazonica.aws.sns                    :as sns]
+    [clojure.edn                          :as edn]
     [clojure.java.io                      :as io]
     [environ.core                         :refer [env]]
     [taoensso.timbre                      :as log]
