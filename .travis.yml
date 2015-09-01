@@ -1,6 +1,6 @@
 language: clojure
 lein: lein2
-script: lein test
+script: lein do test, ancient :all
 
 sudo: false
 cache:

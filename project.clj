@@ -10,6 +10,7 @@
                  [ch.qos.logback/logback-classic "1.1.3"]
                  [clj-airbrake "2.4.3"]
                  [clj-http-lite  "0.3.0"]
+                 [cheshire "5.5.0"]
                  [environ "1.0.0"]
                  [miscellany "0.0.3"]
                  [com.stuartsierra/component "0.2.3"]]
