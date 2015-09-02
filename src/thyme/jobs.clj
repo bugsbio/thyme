@@ -1,6 +1,7 @@
 (ns thyme.jobs
   (:require
     [thyme.jobs.sns]
+    [thyme.jobs.travis]
 
     [thyme.util                           :as u]
     [amazonica.aws.sns                    :as sns]
@@ -15,7 +16,8 @@
 
 (def job-classes
   "Map of keywords to job classes used when reading job manifests."
-  {:sns thyme.jobs.sns.SNSNotificationJob})
+  {:sns thyme.jobs.sns.SNSNotificationJob
+   :travis thyme.jobs.travis.TravisBuildJob})
 
 (defn new-trigger
   "Create a new Cron trigger with the specified schedule."
