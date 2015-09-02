@@ -17,6 +17,7 @@
   :main ^:skip-aot thyme.core
   :resource-paths ["resources" "jobs"]
   :target-path "target/%s"
+  :uberjar-name "thyme.jar"
   :plugins [[lein-expectations "0.0.8"]]
   :profiles {:dev {:source-paths ["src" "dev"]
                    :repl-options {:init-ns user}
