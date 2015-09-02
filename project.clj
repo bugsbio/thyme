@@ -18,7 +18,8 @@
   :resource-paths ["resources" "jobs"]
   :target-path "target/%s"
   :uberjar-name "thyme.jar"
-  :plugins [[lein-expectations "0.0.8"]]
+  :plugins [[lein-expectations "0.0.8"]
+            [lein-ancient "0.6.7"]]
   :profiles {:dev {:source-paths ["src" "dev"]
                    :repl-options {:init-ns user}
                    :dependencies [[org.clojure/tools.namespace "0.2.7"]
