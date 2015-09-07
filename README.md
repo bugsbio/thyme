@@ -28,6 +28,7 @@ There are two valid forms of manifest file (one for SNS jobs, one for Travis bui
 ### Travis job
 
 ```clojure
+;; /my-jobs/integration-test-job.edn
 {:name "Nightly integration test run"                                  ;; a descriptive name for the job
  :id "jobs.integration-tests"                                          ;; a unique id for the job, used by Quartz
  :type :travis                                                         ;; indicates the type of the job - `:travis` for a job that triggers a travis build
