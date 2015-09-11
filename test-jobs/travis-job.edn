@@ -1,0 +1,7 @@
+{:name "Travis Job"
+ :id "jobs.travis"
+ :type :travis
+ :org "bugsbio"
+ :repo "thyme"
+ :pro? false
+ :trigger {:id "triggers.travis" :schedule "0 0 3 * * ?"}}

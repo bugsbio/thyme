@@ -1,6 +1,0 @@
-{:name "Thyme Test Job"
- :id "jobs.test"
- :type :sns
- :topic "test-thyme"
- :trigger {:id "triggers.test" :schedule "0 * * * * ?"}
- :payload {:foo "bar" :baz 123}}

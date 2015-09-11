@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [clojurewerkz/quartzite "2.0.0"]
                  [amazonica "0.3.19"]
+                 [me.raynes/conch "0.8.0"]
                  [com.taoensso/timbre "3.4.0"]
                  [ch.qos.logback/logback-classic "1.1.3"]
                  [clj-airbrake "2.4.3"]

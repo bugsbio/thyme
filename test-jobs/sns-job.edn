@@ -1,0 +1,6 @@
+{:name "SNS Job"
+ :id "jobs.sns"
+ :type :sns
+ :topic "test-thyme"
+ :trigger {:id "triggers.sns" :schedule "0 * * * * ?"}
+ :payload {:foo "bar" :baz 123}}

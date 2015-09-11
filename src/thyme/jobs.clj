@@ -1,5 +1,6 @@
 (ns thyme.jobs
   (:require
+    [thyme.jobs.bash]
     [thyme.jobs.sns]
     [thyme.jobs.travis]
 
@@ -16,7 +17,8 @@
 
 (def job-classes
   "Map of keywords to job classes used when reading job manifests."
-  {:sns thyme.jobs.sns.SNSNotificationJob
+  {:bash thyme.jobs.bash.BashScriptJob
+   :sns thyme.jobs.sns.SNSNotificationJob
    :travis thyme.jobs.travis.TravisBuildJob})
 
 (defn new-trigger

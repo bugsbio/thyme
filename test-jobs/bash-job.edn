@@ -1,0 +1,6 @@
+{:name "Bash job"
+ :id "jobs.bash"
+ :type :bash
+ :script "test-scripts/test-bash-script"
+ :args ["cat"]
+ :trigger {:id "triggers.bash" :schedule "0 * * * * ?"}}
